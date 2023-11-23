@@ -2,28 +2,57 @@ import math
 import matplotlib.pyplot as plt
 import openpyxl
 
-"""
 # Ruta al archivo Excel
 #archivo_excel = ruta_archivo
+def archivoExcel(archivo_excel, nombreHoja, columnaC, columnaP):
+# Carga el libro de trabajo (workbook) 
+    paquetes = {}
+    contador = 1
+    libro_trabajo = openpyxl.load_workbook(archivo_excel)
+    coordenadas = []
 
-# Carga el libro de trabajo (workbook)
-libro_trabajo = openpyxl.load_workbook(archivo_excel)
+    # Selecciona la hoja de trabajo (worksheet) por nombre
+    hoja_trabajo = libro_trabajo[nombreHoja]
 
-# Selecciona la hoja de trabajo (worksheet) por nombre
-hoja_trabajo = libro_trabajo['NombreDeTuHoja']
+    # Especifica la letra de la columna que deseas (por ejemplo, 'A' para la columna A)
 
-# Especifica la letra de la columna que deseas (por ejemplo, 'A' para la columna A)
-columna_deseada = 'A'
+    # Itera sobre las primeras 20 filas de la columna deseada
+    for fila in range(1, 21):  # Empieza desde la fila 1 hasta la fila 20
+        celdaCoordenadas = f'{columnaC}{fila}'
+        celdaPesos = f'{columnaP}{fila}'  # Construye la referencia de celda (por ejemplo, 'A1', 'A2', ...)
+        valor_celdaCoordenadas = hoja_trabajo[celdaCoordenadas].value
+        valor_celdaPesos = hoja_trabajo[celdaPesos].value
+        if(valor_celdaPesos or valor_celdaCoordenadas != None):
+            x = ""
+            y = ""
+            segundoValor = False
+            for i in valor_celdaCoordenadas:
+                if i == ",":
+                    segundoValor = True
+                elif segundoValor == True:
+                    y = y + i
+                else:
+                    x = x + i
+            try:
+                x=float(x)
+                y=float(y)
+                valor_celdaPesos = int(valor_celdaPesos)
+            except:
+                print("error")
+            else:
+                coordenadas.append([])
+                coordenadas[contador-1].append(x)
+                coordenadas[contador-1].append(y)
+                numero = str(contador)
+                paquetes[numero] = {"espacio":valor_celdaPesos, "coordenadas":(x,y)}
+                contador = contador+ 1
+                numero = int(contador)
 
-# Itera sobre las primeras 20 filas de la columna deseada
-for fila in range(1, 21):  # Empieza desde la fila 1 hasta la fila 20
-    celda = f'{columna_deseada}{fila}'  # Construye la referencia de celda (por ejemplo, 'A1', 'A2', ...)
-    valor_celda = hoja_trabajo[celda].value
-    print(f'Valor en la celda {celda}: {valor_celda}') 
 
-# Cierra el libro de trabajo después de usarlo
-libro_trabajo.close()
-"""
+    return coordenadas, main(paquetes)
+    # Cierra el libro de trabajo después de usarlo
+    libro_trabajo.close()
+
 #recibe el numero de camiones, el espacio de cada camión y la información de los paquetes sus coordenadas y peso de cada paquete
 def organizar_paquetes(camiones, paquetes):
     # Ordenar los paquetes por espacio de menor a mayor
