@@ -1,11 +1,28 @@
 import math
 import matplotlib.pyplot as plt
 import openpyxl
+import geopandas as gpd
+from shapely.geometry import Point
 
 # Ruta al archivo Excel
 #archivo_excel = ruta_archivo
-def archivoExcel(archivo_excel, nombreHoja, columnaC, columnaP):
+def convertirdatos(flotante, flotante2, entero):
+    convertido = False
+    try:
+        print(type(flotante))
+        flotante=float(flotante)
+        flotante=float(flotante2)
+        flotante = int(entero)
+    except:
+        print("error")
+        return convertido
+    else:
+        convertido = True
+        return convertido
+
+def archivoExcel(archivo_excel, nombreHoja, columnaC, columnaP,ultimaFila):
 # Carga el libro de trabajo (workbook) 
+    datosCosta = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
     paquetes = {}
     contador = 1
     libro_trabajo = openpyxl.load_workbook(archivo_excel)
@@ -15,14 +32,15 @@ def archivoExcel(archivo_excel, nombreHoja, columnaC, columnaP):
     hoja_trabajo = libro_trabajo[nombreHoja]
 
     # Especifica la letra de la columna que deseas (por ejemplo, 'A' para la columna A)
-
+    ultimaFila = int(ultimaFila)
     # Itera sobre las primeras 20 filas de la columna deseada
-    for fila in range(1, 21):  # Empieza desde la fila 1 hasta la fila 20
+    for fila in range(1, ultimaFila + 1):  # Empieza desde la fila 1 hasta la fila que se haya establecido
         celdaCoordenadas = f'{columnaC}{fila}'
         celdaPesos = f'{columnaP}{fila}'  # Construye la referencia de celda (por ejemplo, 'A1', 'A2', ...)
         valor_celdaCoordenadas = hoja_trabajo[celdaCoordenadas].value
         valor_celdaPesos = hoja_trabajo[celdaPesos].value
-        if(valor_celdaPesos or valor_celdaCoordenadas != None):
+        
+        if((valor_celdaPesos or valor_celdaCoordenadas != None)):
             x = ""
             y = ""
             segundoValor = False
@@ -33,20 +51,21 @@ def archivoExcel(archivo_excel, nombreHoja, columnaC, columnaP):
                     y = y + i
                 else:
                     x = x + i
-            try:
+            convertido =  convertirdatos(x,y,valor_celdaPesos)
+            if convertido  != False:
                 x=float(x)
                 y=float(y)
-                valor_celdaPesos = int(valor_celdaPesos)
-            except:
-                print("error")
-            else:
-                coordenadas.append([])
-                coordenadas[contador-1].append(x)
-                coordenadas[contador-1].append(y)
-                numero = str(contador)
-                paquetes[numero] = {"espacio":valor_celdaPesos, "coordenadas":(x,y)}
-                contador = contador+ 1
-                numero = int(contador)
+                peso = int(valor_celdaPesos)
+                punto = Point(y,x)
+                enElMar =  not datosCosta.geometry.contains(punto).any()
+                if enElMar == False:
+                    if((-90 <= y <=90)and (-180 <= x <= 180)):
+                        if(0<peso<=15):
+                            coordenadas.append([])
+                            coordenadas[contador-1].append(x)
+                            coordenadas[contador-1].append(y)
+                            paquetes[contador] = {"espacio":valor_celdaPesos, "coordenadas":(x,y)}
+                            contador = contador+ 1
 
 
     return coordenadas, main(paquetes)
@@ -135,7 +154,8 @@ def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen 
     plt.show()"""
 
 def main(paquetes):
-    rutas = []
+    contador = 0
+    rutas = {}
     # Ejemplo de datos de entrada para la funcion de organizar paquetes
     camiones = {"camion1": 10, "camion2": 15}
 
@@ -186,7 +206,8 @@ def main(paquetes):
         print("Distancia total:", mejor_distancia)
 
         # Dibujar la ruta
-        
+        rutas[contador_ruta] = {"Ruta": mejor_ruta, "paquetes": paquetes_en_camion}
         contador_ruta += 1  # Incrementamos el contador de ruta
-        rutas.append(mejor_ruta)
+    
+    
     return rutas
