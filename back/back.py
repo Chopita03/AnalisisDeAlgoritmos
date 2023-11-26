@@ -132,7 +132,8 @@ def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen 
 
     return ruta, distancia_total    #retorna la ruta y la distancia de esa ruta
 
-"""def dibujar_ruta(camino, destinos, mejor_distancia):    #para esta función recibe 
+"""
+def dibujar_ruta(camino, destinos, mejor_distancia):    #para esta función recibe 
     x = [destinos[i][0] for i in camino]
     y = [destinos[i][1] for i in camino]
     x.append(x[0])
@@ -151,7 +152,8 @@ def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen 
     plt.xlabel('Coordenada X')
     plt.ylabel('Coordenada Y')
     plt.grid(True)
-    plt.show()"""
+    plt.show()
+"""
 
 def main(paquetes):
     contador = 0
@@ -182,9 +184,11 @@ def main(paquetes):
     orden_camiones = organizar_paquetes(camiones, paquetes)
 
     # Imprimir la lista de diccionarios para ver como esta
-    print("Lista de rutas")
+    print("\nLista de rutas")
+    print("==================================")
     for camion_paquetes in orden_camiones:
         print(camion_paquetes)
+    print("==================================")
 
     contador_ruta = 1
 
