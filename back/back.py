@@ -104,7 +104,7 @@ def organizar_paquetes(camiones, paquetes):
 def distancia(ciudad1, ciudad2):#recibe dos ciudades
     return math.sqrt((ciudad2[0] - ciudad1[0])**2 + (ciudad2[1] - ciudad1[1])**2) #regresa la distancia que hay entre las ciudades
 
-def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen y las coordenadas de los clientes
+def generar_rutas(almacen, clientes):    #recibe las coordenadas del almacen y las coordenadas de los clientes
     destinos = [almacen] + list(clientes.values())  
     num_destinos = len(destinos)    #el numero de destinos es igual al tamaño que tiene destinos
     visitados = [False] * num_destinos  
@@ -200,7 +200,7 @@ def main(paquetes):
         almacen = (42.359998, -71.058502)
 
         # Llamar a la función para encontrar la mejor ruta
-        mejor_ruta, mejor_distancia = viajero_comercio(almacen, paquetes_en_camion)
+        mejor_ruta, mejor_distancia = generar_rutas(almacen, paquetes_en_camion)
 
         # Imprimir información sobre la ruta
         print(f"\nRuta {contador_ruta}")
