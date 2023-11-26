@@ -216,7 +216,7 @@ def app(root):
             root.after(5000,quitarAdvetencia)
             print("Dato incorrecto")
         else:
-            if((-90 <= y <=90)and (-180 <= x <= 180)):
+            if((-180 <= y <=180)and (-90 <= x <= 90)):
                 if((peso > 15) or (peso <= 0)):
                     labelAdvertencia_f1.config(text="Peso del paquete incorrecto, intente de nuevo",fg='#f00')
                     root.after(5000,quitarAdvetencia)
