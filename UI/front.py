@@ -38,6 +38,7 @@ def app(root):
             button_empezarA_f1.place_forget()
             entry_labelh4.place_forget()
             button_empezarA_f1.place_forget()
+            labelh4.place_forget()
             
             
         elif(opcionMenu == "datosAutomatico"):
@@ -72,6 +73,7 @@ def app(root):
             entry_label3_1_f1.place_forget()
             entry_labelh4.place_forget()
             button_empezarA_f1.place_forget()
+            labelh4.place_forget()
 
         frame3.lower(frame1)  
         mostrar.set(0)
@@ -175,20 +177,7 @@ def app(root):
                 coordenadasO = []
                 contadorDestino = 1
                 coordenadasO.append(almacen.position)
-            button_agregar_desde_archivo.place_forget()
-            labelh.place_forget()
-            entry_labelh.place_forget()
-            labelh2.place_forget()
-            labelh3.place_forget()
-            entry_labelh.place_forget()
-            entry_labelh2.place_forget()
-            entry_labelh3.place_forget()
-            button_empezarA_f1.place_forget()
-            button1_f3.place_forget()
-            button2_f3.place_forget()
-            button3_f3.place_forget()
-            labelh4.place_forget()
-            entry_labelh4.place_forget()
+            eliminarDatosFrames("datosManual")
             label5_f1.place(relx= 0.5, rely=0.3, anchor="center")
             button1_label5_f1.place(relx= 0.5, rely=0.37, anchor="center")
             button2_label5_f1.place(relx= 0.5, rely=0.44, anchor="center")
@@ -216,7 +205,7 @@ def app(root):
             root.after(5000,quitarAdvetencia)
             print("Dato incorrecto")
         else:
-            if((-90 <= y <=90)and (-180 <= x <= 180)):
+            if((-90 <= x <=90)and (-180 <= y <= 180)):
                 if((peso > 15) or (peso <= 0)):
                     labelAdvertencia_f1.config(text="Peso del paquete incorrecto, intente de nuevo",fg='#f00')
                     root.after(5000,quitarAdvetencia)
@@ -292,17 +281,7 @@ def app(root):
         else:
             global contador
             contador = 1
-            label3_1_f1.place_forget()
-            entry_label3_1_f1.place_forget()
-            label2_f1.place_forget()
-            entry_label2_f1.place_forget()
-            label3_f1.place_forget()
-            entry_label3_f1.place_forget()
-            button_agregar_f1.place_forget()
-            button1_f3.place_forget()
-            button2_f3.place_forget()
-            button3_f3.place_forget()
-            button_empezar_f1.place_forget()
+            eliminarDatosFrames("datosAutomatico")
             coordenadasO = []
             coordenadasO.append(almacen.position)
             for i in range(len(coordenadas)):
@@ -418,7 +397,7 @@ def app(root):
     labelh = tk.Label(frame1, text="Ingresa el nombre de la hoja donde se obtienen las coordenadas",bg="black",fg="white")  #######
     labelh2 = tk.Label(frame1, text="Ingresa el nombre de la columna de las cordenadas",bg="black",fg="white")
     labelh3 = tk.Label(frame1, text="Ingresa el nombre de la columna de los pesos",bg="black",fg="white")
-    labelh4 = tk.Label(frame1, text="Ingresa el nombre de la ultima fila donde se encuentren datos",bg="black",fg="white")
+    labelh4 = tk.Label(frame1, text="Ingresa el numero de la ultima fila donde se encuentren datos",bg="black",fg="white")
 
     entry_labelh= tk.Entry(frame1, width=40)
     entry_labelh2= tk.Entry(frame1, width=40)  
