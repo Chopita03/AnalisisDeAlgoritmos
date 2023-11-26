@@ -85,7 +85,7 @@ def organizar_paquetes(camiones, paquetes):
         for camion, capacidad in camiones.items(): #itera en la cantidad de camiones y su capacidad
             espacio_disponible = capacidad  #nombra a la capacidad como el espacio disponible para irlo restando
             paquetes_en_camion = {}         #declara un diccionario vacio para los paquetes que vayan a ir en el camión
-
+    
             for paquete, info_paquete in paquetes_ordenados: #itera en el numero de paquetes que hay 
                 if info_paquete["espacio"] <= espacio_disponible and paquete not in paquetes_en_camion: #Si el tamaño del paquete es menor o igual al espacio del camion y no se encuentra ya en el camión
                     paquetes_en_camion[paquete] = info_paquete["coordenadas"]   #Guarda ese paquete en el diccionario con sus respectivas coordenadas
@@ -101,10 +101,10 @@ def organizar_paquetes(camiones, paquetes):
 
     return resultado 
 
-def distancia(ciudad1, ciudad2):#recibe dos ciudades
-    return math.sqrt((ciudad2[0] - ciudad1[0])**2 + (ciudad2[1] - ciudad1[1])**2) #regresa la distancia que hay entre las ciudades
+def distancia(punto1, punto2):#recibe dos puntos de entrega
+    return math.sqrt((punto2[0] - punto1[0])**2 + (punto2[1] - punto1[1])**2) #regresa la distancia que hay entre los puntos
 
-def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen y las coordenadas de los clientes
+def generar_rutas(almacen, clientes):    #recibe las coordenadas del almacen y las coordenadas de los clientes
     destinos = [almacen] + list(clientes.values())  
     num_destinos = len(destinos)    #el numero de destinos es igual al tamaño que tiene destinos
     visitados = [False] * num_destinos  
@@ -132,7 +132,8 @@ def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen 
 
     return ruta, distancia_total    #retorna la ruta y la distancia de esa ruta
 
-"""def dibujar_ruta(camino, destinos, mejor_distancia):    #para esta función recibe 
+"""
+def dibujar_ruta(camino, destinos, mejor_distancia):    #para esta función recibe 
     x = [destinos[i][0] for i in camino]
     y = [destinos[i][1] for i in camino]
     x.append(x[0])
@@ -151,7 +152,8 @@ def viajero_comercio(almacen, clientes):    #recibe las coordenadas del almacen 
     plt.xlabel('Coordenada X')
     plt.ylabel('Coordenada Y')
     plt.grid(True)
-    plt.show()"""
+    plt.show()
+"""
 
 def main(paquetes):
     contador = 0
@@ -182,9 +184,11 @@ def main(paquetes):
     orden_camiones = organizar_paquetes(camiones, paquetes)
 
     # Imprimir la lista de diccionarios para ver como esta
-    print("Lista de rutas")
+    print("\nLista de rutas")
+    print("==================================")
     for camion_paquetes in orden_camiones:
         print(camion_paquetes)
+    print("==================================")
 
     contador_ruta = 1
 
@@ -196,7 +200,7 @@ def main(paquetes):
         almacen = (42.359998, -71.058502)
 
         # Llamar a la función para encontrar la mejor ruta
-        mejor_ruta, mejor_distancia = viajero_comercio(almacen, paquetes_en_camion)
+        mejor_ruta, mejor_distancia = generar_rutas(almacen, paquetes_en_camion)
 
         # Imprimir información sobre la ruta
         print(f"\nRuta {contador_ruta}")
