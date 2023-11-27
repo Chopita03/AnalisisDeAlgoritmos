@@ -145,11 +145,10 @@ def app(root):
         try:
             coordenadasD, rutas = archivoExcel(ruta_archivo, entry_labelh.get(), entry_labelh2.get(),entry_labelh3.get(),entry_labelh4.get())
         except:
-            labelAdvertencia_f1.config(text="Error en los datos ingresados, intende de nuevo'",fg='#f00')
+            labelAdvertencia_f1.config(text="Error en los datos ingresados\nintente de nuevo",fg='#f00')
             root.after(5000,quitarAdvetencia)
             
         else:
-            print(coordenadasD)
             for i in range(len(coordenadasD)):
                 x=coordenadasD[i][0]
                 y=coordenadasD[i][1]
@@ -172,13 +171,15 @@ def app(root):
                                 contadorDestino = int(contadorDestino)
                                 contadorDestino = contadorDestino + 1
                             contador = contador+ 1
-                        print(ruta, rutas[i+1]["paquetes"])
                 coordenadasO.append(almacen.position)
                 crearRuta = map_widget.set_path([elemento for elemento in coordenadasO],color=colores[numero_aleatorio])
                 coordenadasO = []
                 contadorDestino = 1
                 coordenadasO.append(almacen.position)
             eliminarDatosFrames("datosManual")
+            button1_f3.place_forget()
+            button2_f3.place_forget()
+            button3_f3.place_forget()
             label5_f1.place(relx= 0.5, rely=0.3, anchor="center")
             button1_label5_f1.place(relx= 0.5, rely=0.37, anchor="center")
             button2_label5_f1.place(relx= 0.5, rely=0.44, anchor="center")
@@ -204,18 +205,16 @@ def app(root):
         except:
             labelAdvertencia_f1.config(text="Dato incorrecto, revise la informacion",fg='#f00')
             root.after(5000,quitarAdvetencia)
-            print("Dato incorrecto")
         else:
             if((-90 <= x <=90)and (-180 <= y <= 180)):
                 if((peso > 15) or (peso <= 0)):
-                    labelAdvertencia_f1.config(text="Peso del paquete incorrecto, intente de nuevo",fg='#f00')
+                    labelAdvertencia_f1.config(text="Peso del paquete incorrecto\n intente de nuevo",fg='#f00')
                     root.after(5000,quitarAdvetencia)
                     return
                 punto = Point(y,x)
                 enElMar =  not datosCosta.geometry.contains(punto).any()
                 if enElMar:
-                    print("no se puede agregar el dato") 
-                    labelAdvertencia_f1.config(text="Las coordenadas estan en el mar, intente de nuevo",fg='#f00')
+                    labelAdvertencia_f1.config(text="Las coordenadas estan en el mar\n intente de nuevo",fg='#f00')
                     root.after(5000,quitarAdvetencia)
                 else:
                     global contador
@@ -244,7 +243,6 @@ def app(root):
                     entry_label2_f1.delete(0, tk.END)
                     entry_label3_f1.delete(0, tk.END)
                     entry_label3_1_f1.delete(0, tk.END)
-                    print(coordenadas)
                     labelAdvertencia_f1.config(text="Marcador agregado exitosamente",fg= "#66e125" )
                     root.after(5000,quitarAdvetencia)
             else:
@@ -254,7 +252,6 @@ def app(root):
     
     def eliminar():
         global contador
-        print(coordenadas)
         nombre  = entry_label4_f1.get()
         if(nombre == "Almacen"):
             labelAdvertencia_f1.config(text="No se puede eliminar el Almacen",fg='#f00')
@@ -275,7 +272,6 @@ def app(root):
     def empezarRuta():
         contadorDestino = 1
         nombre = "dawdawdawdawd"
-        print(coordenadas, "Zorrita")
         if(len(coordenadas)<2):
             labelAdvertencia_f1.config(text="No se han agregado coordenadas",fg='#f00')
             root.after(5000,quitarAdvetencia)
@@ -283,11 +279,13 @@ def app(root):
             global contador
             contador = 1
             eliminarDatosFrames("datosAutomatico")
+            button1_f3.place_forget()
+            button2_f3.place_forget()
+            button3_f3.place_forget()
             coordenadasO = []
             coordenadasO.append(almacen.position)
             for i in range(len(coordenadas)):
                 if i !=0:
-                    print(coordenadas[i])
                     paquetes[contador] = {"espacio":coordenadas[i][1], "coordenadas":(coordenadas[i][3],coordenadas[i][4])}
                     contador = contador + 1 
             rutas = main(paquetes)
@@ -305,7 +303,6 @@ def app(root):
                                 contadorDestino = int(contadorDestino)
                                 contadorDestino = contadorDestino + 1
                             contador = contador+ 1
-                        print(ruta, rutas[i+1]["paquetes"])
                 coordenadasO.append(almacen.position)
                 crearRuta = map_widget.set_path([elemento for elemento in coordenadasO],color=colores[numero_aleatorio])
                 coordenadasO = []
@@ -318,6 +315,7 @@ def app(root):
     def nuevasRutas():
         global coordenadas, almacen, contador, paquetes
         paquetes = {}
+        eliminarDatosFrames("datosManual")
         label5_f1.place_forget()
         button1_label5_f1.place_forget()
         button2_label5_f1.place_forget()
@@ -369,7 +367,7 @@ def app(root):
     button_f1_menu.place(relx= 0, rely=0)
 
     labelAdvertencia_f1 = tk.Label(frame1, text="", font=('Consolas', 12, 'bold'), fg='#f00',bg="black")
-    labelAdvertencia_f1.place(relx= 0.5, rely=0.25,anchor="center")
+    labelAdvertencia_f1.place(relx= 0.5, rely=0.2,anchor="center")
 
     label1_f1 = tk.Label(frame1, text=" SmartDelivery", font=('Consolas', 20, 'bold'), fg='#f00',bg="black")
     label1_f1.place(relx= 0.5, rely=0.1,anchor="center")
@@ -462,3 +460,4 @@ def app(root):
 
 
 app(root_tk)
+
